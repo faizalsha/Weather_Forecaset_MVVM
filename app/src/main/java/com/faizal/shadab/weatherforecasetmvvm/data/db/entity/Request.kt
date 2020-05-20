@@ -1,4 +1,4 @@
-package com.faizal.shadab.weatherforecasetmvvm.data.response
+package com.faizal.shadab.weatherforecasetmvvm.data.db.entity
 
 
 import com.google.gson.annotations.SerializedName

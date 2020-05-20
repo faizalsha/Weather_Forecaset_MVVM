@@ -1,6 +1,6 @@
 package com.faizal.shadab.weatherforecasetmvvm.data
 
-import com.faizal.shadab.weatherforecasetmvvm.data.response.CurrentWeatherResponse
+import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.CurrentWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
