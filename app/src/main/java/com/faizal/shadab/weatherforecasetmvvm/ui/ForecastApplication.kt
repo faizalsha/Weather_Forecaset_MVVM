@@ -9,6 +9,7 @@ import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNe
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSourceImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.db.repository.ForecastRepository
 import com.faizal.shadab.weatherforecasetmvvm.data.db.repository.ForecastRepositoryImpl
+import com.faizal.shadab.weatherforecasetmvvm.ui.weather.current.CurrentWeatherViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -24,6 +25,7 @@ class ForecastApplication: Application(), KodeinAware {
         bind<ApixuWeatherApiService>() with singleton { ApixuWeatherApiService(instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance<ForecastDatabase>().currentWeatherDao(), instance()) }
+        bind<CurrentWeatherViewModelFactory>() with singleton { CurrentWeatherViewModelFactory(instance()) }
     }
 
 }

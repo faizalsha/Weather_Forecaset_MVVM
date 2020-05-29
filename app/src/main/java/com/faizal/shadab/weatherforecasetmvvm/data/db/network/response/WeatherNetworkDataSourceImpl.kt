@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
-import com.faizal.shadab.weatherforecasetmvvm.data.db.network.NoConnectivityException
+import com.faizal.shadab.weatherforecasetmvvm.internal.NoConnectivityException
 
 class WeatherNetworkDataSourceImpl(
     private val apixuWeatherApiService: ApixuWeatherApiService

@@ -2,7 +2,7 @@ package com.faizal.shadab.weatherforecasetmvvm.data.db.network
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
+import com.faizal.shadab.weatherforecasetmvvm.internal.NoConnectivityException
 import okhttp3.Interceptor
 import okhttp3.Response
 

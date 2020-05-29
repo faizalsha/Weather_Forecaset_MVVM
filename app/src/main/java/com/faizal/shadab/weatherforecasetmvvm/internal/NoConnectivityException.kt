@@ -1,4 +1,4 @@
-package com.faizal.shadab.weatherforecasetmvvm.data.db.network
+package com.faizal.shadab.weatherforecasetmvvm.internal
 
 import java.io.IOException
 
