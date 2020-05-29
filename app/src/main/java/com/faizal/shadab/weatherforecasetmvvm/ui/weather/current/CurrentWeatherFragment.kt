@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 
 import com.faizal.shadab.weatherforecasetmvvm.R
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
+import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptorImpl
+import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSourceImpl
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -36,11 +39,15 @@ class CurrentWeatherFragment : Fragment() {
         // TODO: Use the ViewModel
 
         //TODO: Remove this code (unlike MVVM architecture)
-        val apiService = ApixuWeatherApiService()
+        val apiService = ApixuWeatherApiService(ConnectivityInterceptorImpl(this.requireContext()))
+        val weatherNetworkDataSource = WeatherNetworkDataSourceImpl(apiService)
+
+        weatherNetworkDataSource.downloadedCurrentWeather.observe(this.viewLifecycleOwner, Observer {
+            tempTextView.text = it.toString()
+        })
 
         GlobalScope.launch(Dispatchers.Main) {
-            val currentWeatherResponse = apiService.getCurrentWeather("London").await()
-            tempTextView.text = currentWeatherResponse.toString()
+            weatherNetworkDataSource.fetchCurrentWeather("london","en")
         }
 
     }
