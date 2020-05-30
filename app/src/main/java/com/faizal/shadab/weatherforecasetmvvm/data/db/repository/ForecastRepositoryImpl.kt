@@ -45,6 +45,7 @@ class ForecastRepositoryImpl(
 
     private suspend fun fetchCurrentWeather(){
         weatherNetworkDataSource.fetchCurrentWeather(
+            //todo fetch data according to location from settings or current location
             "London",
             Locale.getDefault().language
         )
