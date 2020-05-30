@@ -13,6 +13,7 @@ import com.faizal.shadab.weatherforecasetmvvm.R
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptorImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSourceImpl
+import com.faizal.shadab.weatherforecasetmvvm.internal.glide.GlideApp
 import com.faizal.shadab.weatherforecasetmvvm.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.current_weather_fragment.*
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +58,10 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
             updatePrecipitation(it.precip)
             updateWind(it.windDir, it.windSpeed)
             updateVisibility(it.visibility)
+
+            GlideApp.with(this@CurrentWeatherFragment)
+                .load("")
+                .into(imageView_condition_icon)
         })
     }
 
