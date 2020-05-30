@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 
 import com.faizal.shadab.weatherforecasetmvvm.R
@@ -46,7 +47,7 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
         val currentWeather = viewModel.weather.await()
         currentWeather.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
-            tempTextView.text = it.toString()
+            
         })
     }
 
