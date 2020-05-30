@@ -50,17 +50,17 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
             if (it == null) return@Observer
 
             group_loading.visibility = View.GONE
-            //todo get location from api response or settings
-            updateLocation("London")
+            //todo get location settings or current location of device
+            updateLocation("Delhi")
             updateDateToToday()
             updateTemperatures(it.temperature, it.feelslike)
-            //updateCondition(it.condition)
+            updateCondition(it.weatherDescription[0])
             updatePrecipitation(it.precip)
             updateWind(it.windDir, it.windSpeed)
             updateVisibility(it.visibility)
 
             GlideApp.with(this@CurrentWeatherFragment)
-                .load("")
+                .load(it.weatherIcon[0])
                 .into(imageView_condition_icon)
         })
     }

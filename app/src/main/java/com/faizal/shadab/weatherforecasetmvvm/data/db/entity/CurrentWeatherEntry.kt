@@ -9,6 +9,10 @@ const val CURRENT_WEATHER_ID = 0
 
 @Entity(tableName = "current_weather")
 data class CurrentWeatherEntry(
+    @SerializedName("weather_icons")
+    val weatherIcon: List<String>,
+    @SerializedName("weather_descriptions")
+    val weatherDescription: List<String>,
     val feelslike: Double,
     @SerializedName("is_day")
     val isDay: String,

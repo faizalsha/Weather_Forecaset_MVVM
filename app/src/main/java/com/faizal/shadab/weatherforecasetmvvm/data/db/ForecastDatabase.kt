@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.faizal.shadab.weatherforecasetmvvm.data.db.entity.CurrentWeatherEntry
+import com.faizal.shadab.weatherforecasetmvvm.internal.DataTypeConverter
 
 @Database(
     entities = [CurrentWeatherEntry::class],
     version = 1
 )
+@TypeConverters(DataTypeConverter::class)
 abstract class ForecastDatabase : RoomDatabase() {
     abstract fun currentWeatherDao() : CurrentWeatherDao
 
