@@ -13,6 +13,8 @@ import com.faizal.shadab.weatherforecasetmvvm.R
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptorImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSourceImpl
+import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProvider
+import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProviderImpl
 import com.faizal.shadab.weatherforecasetmvvm.internal.glide.GlideApp
 import com.faizal.shadab.weatherforecasetmvvm.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.current_weather_fragment.*
@@ -45,7 +47,9 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
     }
 
     private fun bindUI() = launch {
-        val currentWeather = viewModel.weather.await()
+        val currentWeather = viewModel
+            .weather
+            .await()
         currentWeather.observe(viewLifecycleOwner, Observer {
             if (it == null) return@Observer
 
@@ -59,15 +63,23 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
             updateWind(it.windDir, it.windSpeed)
             updateVisibility(it.visibility)
 
-            GlideApp.with(this@CurrentWeatherFragment)
-                .load(it.weatherIcon[0])
-                .into(imageView_condition_icon)
+            try {
+                GlideApp.with(this@CurrentWeatherFragment)
+                    .load(it.weatherIcon[0])
+                    .into(imageView_condition_icon)
+            } catch (e: Exception){
+                println("debug: exception occurred ${e.message.toString()}")
+            }
         })
     }
 
     private fun chooseLocalizedUnitAbbreviation(metric: String, imperial: String): String {
         //todo get unit from settings
-        return metric
+        val unitProvider = UnitProviderImpl(requireContext())
+        if (unitProvider.getUnitSystem() == "f")
+            return imperial
+        else
+            return metric
     }
 
     private fun updateLocation(location: String) {

@@ -2,6 +2,8 @@ package com.faizal.shadab.weatherforecasetmvvm.data
 
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptor
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.CurrentWeatherResponse
+import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProvider
+import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProviderImpl
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -20,13 +22,13 @@ interface ApixuWeatherApiService {
     @GET("current")
     fun getCurrentWeather(
         @Query("query") location: String,
-        @Query("lang") languageCode: String = "en"
+        @Query("lang") languageCode: String = "en",
+        @Query("units") unit: String = "m"
     ): Deferred<CurrentWeatherResponse>
 
     companion object {
         operator fun invoke(connectivityInterceptor: ConnectivityInterceptor): ApixuWeatherApiService {
             val requestInterceptor = Interceptor { chain ->
-
                 val url = chain.request()
                     .url()
                     .newBuilder()

@@ -5,5 +5,5 @@ import androidx.lifecycle.LiveData
 interface WeatherNetworkDataSource {
     val downloadedCurrentWeather: LiveData<CurrentWeatherResponse>
 
-    suspend fun fetchCurrentWeather(location: String, languageCode: String)
+    suspend fun fetchCurrentWeather(location: String, languageCode: String, unit: String)
 }
