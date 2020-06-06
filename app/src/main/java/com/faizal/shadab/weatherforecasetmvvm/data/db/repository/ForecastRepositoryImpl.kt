@@ -7,6 +7,7 @@ import com.faizal.shadab.weatherforecasetmvvm.data.db.entity.CurrentWeatherEntry
 import com.faizal.shadab.weatherforecasetmvvm.data.db.entity.WeatherLocation
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.CurrentWeatherResponse
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSource
+import com.faizal.shadab.weatherforecasetmvvm.data.provider.LocationProvider
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +21,8 @@ class ForecastRepositoryImpl(
     private val currentWeatherDao: CurrentWeatherDao,
     private val weatherLocationDao: WeatherLocationDao,
     private val weatherNetworkDataSource: WeatherNetworkDataSource,
-    private val unitProvider: UnitProvider
+    private val unitProvider: UnitProvider,
+    private val locationProvider: LocationProvider
 ) : ForecastRepository {
 
     init {
@@ -56,27 +58,24 @@ class ForecastRepositoryImpl(
             fetchCurrentWeather()
             return
         }
-        if (isFetchCurrentNeeded(lastWeatherLocation.zonedDateTime) || isLocationChanged())
+        if (isFetchCurrentNeeded(lastWeatherLocation.zonedDateTime)
+            || locationProvider.hasLocationChanged(lastWeatherLocation))
             fetchCurrentWeather()
     }
 
-    private fun isLocationChanged(): Boolean {
-        //todo : check whether location has changed or not
-        return true
-    }
 
     private suspend fun fetchCurrentWeather(){
         println("special debug: ${unitProvider.getUnitSystem()}")
         weatherNetworkDataSource.fetchCurrentWeather(
             //todo fetch data according to location from settings or current location
-            "Delhi",
+            locationProvider.getPreferredLocationString(),
             Locale.getDefault().language,
             unitProvider.getUnitSystem()
         )
     }
 
     private fun isFetchCurrentNeeded(lastWeatherResponseFetchTime: Time): Boolean {
-        //TODO: change it with time
+        //TODO: local time and location time mismatch
         val thirtyMinAgoMillis = System.currentTimeMillis() - 60000 * 30
         val thirtyMinAgo = Time(thirtyMinAgoMillis)
         return thirtyMinAgo > lastWeatherResponseFetchTime
