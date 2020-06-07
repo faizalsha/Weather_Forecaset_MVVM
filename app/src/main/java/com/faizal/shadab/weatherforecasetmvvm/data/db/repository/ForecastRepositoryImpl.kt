@@ -55,11 +55,14 @@ class ForecastRepositoryImpl(
     private suspend fun initWeatherData() {
         val lastWeatherLocation = weatherLocationDao.getLocation().value
         if (lastWeatherLocation == null){
+            //todo this condition is always true fix this
+            println("debug from initweather: lastWeatherLocation is null")
             fetchCurrentWeather()
             return
         }
-        if (isFetchCurrentNeeded(lastWeatherLocation.zonedDateTime)
-            || locationProvider.hasLocationChanged(lastWeatherLocation))
+        val temp = lastWeatherLocation
+        if (isFetchCurrentNeeded(temp!!.zonedDateTime)
+            || locationProvider.hasLocationChanged(temp!!))
             fetchCurrentWeather()
     }
 
@@ -78,6 +81,7 @@ class ForecastRepositoryImpl(
         //TODO: local time and location time mismatch
         val thirtyMinAgoMillis = System.currentTimeMillis() - 60000 * 30
         val thirtyMinAgo = Time(thirtyMinAgoMillis)
+        println("debug hh: ${thirtyMinAgo > lastWeatherResponseFetchTime}")
         return thirtyMinAgo > lastWeatherResponseFetchTime
     }
 }

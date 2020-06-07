@@ -1,6 +1,7 @@
 package com.faizal.shadab.weatherforecasetmvvm.ui
 
 import android.app.Application
+import android.content.Context
 import androidx.preference.PreferenceManager
 import com.faizal.shadab.weatherforecasetmvvm.R
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
@@ -16,6 +17,8 @@ import com.faizal.shadab.weatherforecasetmvvm.data.provider.LocationProviderImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProvider
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProviderImpl
 import com.faizal.shadab.weatherforecasetmvvm.ui.weather.current.CurrentWeatherViewModelFactory
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -30,7 +33,8 @@ class ForecastApplication: Application(), KodeinAware {
         bind<ConnectivityInterceptor>() with singleton { ConnectivityInterceptorImpl(instance()) }
         bind<ApixuWeatherApiService>() with singleton { ApixuWeatherApiService(instance()) }
         bind<UnitProvider>() with singleton { UnitProviderImpl(instance()) }
-        bind<LocationProvider>() with singleton { LocationProviderImpl() }
+        bind<FusedLocationProviderClient>() with singleton { LocationServices.getFusedLocationProviderClient(instance<Context>()) }
+        bind<LocationProvider>() with singleton { LocationProviderImpl(instance(), instance()) }
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance<ForecastDatabase>().currentWeatherDao(), instance<ForecastDatabase>().weatherLocationDao(), instance(), instance(), instance()) }
         bind<CurrentWeatherViewModelFactory>() with singleton { CurrentWeatherViewModelFactory(instance()) }

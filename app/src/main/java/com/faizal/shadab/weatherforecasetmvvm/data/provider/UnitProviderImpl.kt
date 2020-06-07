@@ -6,10 +6,7 @@ import androidx.preference.PreferenceManager
 
 
 const val UNIT_SYSTEM = "UNIT_SYSTEM"
-class UnitProviderImpl(context: Context) : UnitProvider {
-    private val appContext = context.applicationContext
-    private val preference: SharedPreferences
-        get() = PreferenceManager.getDefaultSharedPreferences(appContext)
+class UnitProviderImpl(context: Context): PreferenceProvider(context), UnitProvider {
     override fun getUnitSystem(): String {
         val unit =  preference.getString(UNIT_SYSTEM, "f")
         if(unit != null)
