@@ -4,12 +4,17 @@ import android.app.Application
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.faizal.shadab.weatherforecasetmvvm.R
+import com.faizal.shadab.weatherforecasetmvvm.data.AccuWeatherApiService
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
 import com.faizal.shadab.weatherforecasetmvvm.data.db.ForecastDatabase
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptor
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptorImpl
+import com.faizal.shadab.weatherforecasetmvvm.data.db.network.accuweather.DailyForecastWeatherDataSource
+import com.faizal.shadab.weatherforecasetmvvm.data.db.network.accuweather.DailyForecastWeatherDataSourceImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSource
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSourceImpl
+import com.faizal.shadab.weatherforecasetmvvm.data.db.repository.DailyForecastRepository
+import com.faizal.shadab.weatherforecasetmvvm.data.db.repository.DailyForecastRepositoryImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.db.repository.ForecastRepository
 import com.faizal.shadab.weatherforecasetmvvm.data.db.repository.ForecastRepositoryImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.LocationProvider
@@ -17,6 +22,7 @@ import com.faizal.shadab.weatherforecasetmvvm.data.provider.LocationProviderImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProvider
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProviderImpl
 import com.faizal.shadab.weatherforecasetmvvm.ui.weather.current.CurrentWeatherViewModelFactory
+import com.faizal.shadab.weatherforecasetmvvm.ui.weather.future.list.FutureListWeatherViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import org.kodein.di.Kodein
@@ -38,6 +44,10 @@ class ForecastApplication: Application(), KodeinAware {
         bind<WeatherNetworkDataSource>() with singleton { WeatherNetworkDataSourceImpl(instance()) }
         bind<ForecastRepository>() with singleton { ForecastRepositoryImpl(instance<ForecastDatabase>().currentWeatherDao(), instance<ForecastDatabase>().weatherLocationDao(), instance(), instance(), instance()) }
         bind<CurrentWeatherViewModelFactory>() with singleton { CurrentWeatherViewModelFactory(instance()) }
+        bind<AccuWeatherApiService>() with singleton { AccuWeatherApiService(instance()) }
+        bind<DailyForecastWeatherDataSource>() with singleton { DailyForecastWeatherDataSourceImpl(instance()) }
+        bind<DailyForecastRepository>() with singleton { DailyForecastRepositoryImpl(instance<ForecastDatabase>().forecastDao(), instance(), instance(), instance()) }
+        bind<FutureListWeatherViewModelFactory>() with singleton { FutureListWeatherViewModelFactory(instance()) }
     }
 
     override fun onCreate() {

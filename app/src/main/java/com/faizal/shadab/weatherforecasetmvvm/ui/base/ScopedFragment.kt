@@ -16,9 +16,10 @@ abstract class ScopedFragment: Fragment(), CoroutineScope {
         super.onCreate(savedInstanceState)
         job = Job()
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
+    //there was a problem with onDestroy() with CurrentWeatherFragment (onDestroy was not getting called)
+    override fun onDestroyView() {
+        super.onDestroyView()
         job.cancel()
+        println("debug: onDestroy Called")
     }
 }

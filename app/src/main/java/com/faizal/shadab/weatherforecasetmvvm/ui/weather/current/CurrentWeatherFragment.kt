@@ -8,17 +8,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 import com.faizal.shadab.weatherforecasetmvvm.R
+import com.faizal.shadab.weatherforecasetmvvm.data.AccuWeatherApiService
 import com.faizal.shadab.weatherforecasetmvvm.data.ApixuWeatherApiService
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.ConnectivityInterceptorImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.db.network.response.WeatherNetworkDataSourceImpl
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProvider
 import com.faizal.shadab.weatherforecasetmvvm.data.provider.UnitProviderImpl
 import com.faizal.shadab.weatherforecasetmvvm.internal.glide.GlideApp
+
 import com.faizal.shadab.weatherforecasetmvvm.ui.base.ScopedFragment
 import kotlinx.android.synthetic.main.current_weather_fragment.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.kodein.di.Kodein
@@ -29,7 +34,8 @@ import org.kodein.di.generic.instance
 class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     override val kodein by closestKodein()
-    private val viewModelFactory: CurrentWeatherViewModelFactory by instance()
+    private val viewModelFactory: CurrentWeatherViewModelFactory by instance<CurrentWeatherViewModelFactory>()
+
 
     private lateinit var viewModel: CurrentWeatherViewModel
 
@@ -42,7 +48,7 @@ class CurrentWeatherFragment : ScopedFragment(), KodeinAware {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(CurrentWeatherViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(CurrentWeatherViewModel::class.java)
         bindUI()
     }
 
